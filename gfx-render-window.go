@@ -1,5 +1,5 @@
-// Copyright 2012.  All rights reserved. 
-// Use of this source code is governed by a BSD-style  
+// Copyright 2012.  All rights reserved.
+// Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 ////////////////////////////////////////////////////////////
@@ -26,7 +26,6 @@
 //
 ////////////////////////////////////////////////////////////
 package sfml
-
 
 // #cgo LDFLAGS:-lcsfml-graphics
 // #include <SFML/Graphics/Export.h>
@@ -81,10 +80,10 @@ func NewRenderWindowDefault(mode VideoMode, title string) RenderWindow {
 // \param handle   Platform-specific handle of the control
 // \param settings Creation settings (pass NULL to use default values)
 // sfRenderWindow* sfRenderWindow_createFromHandle(sfWindowHandle handle, const sfContextSettings* settings);
-// func RenderWindowFromhandle(handle WindowHandle, settings ContextSettings) RenderWindow { 
+// func RenderWindowFromhandle(handle WindowHandle, settings ContextSettings) RenderWindow {
 // 	mptr := unsafe.Pointer(&mode)
 // 	mp := (*C.sfVideoMode)(unsafe.Pointer(&handle))
-//     return RenderWindow { 
+//     return RenderWindow {
 // 		C.sfRenderWindow_createFromHandle(C.sfWindowHandle(handle.Cref), (*C.sfContextSettings)(settings.Cref)),
 // 	}
 // }
@@ -127,7 +126,7 @@ func (self RenderWindow) Settings() ContextSettings {
 // \return sfTrue if an event was returned, sfFalse if events stack was empty
 // sfBool sfRenderWindow_pollEvent(sfRenderWindow* renderWindow, sfEvent* event);
 func (self RenderWindow) PollEvent() (interface{}, bool) {
-	// ok if got event.	
+	// ok if got event.
 	e := NewEvent()
 	mptr := unsafe.Pointer(e.Cref)
 	mp := (*C.sfEvent)(mptr)
@@ -239,7 +238,7 @@ func (self RenderWindow) SetTitle(title string) {
 // \param height       Icon's height, in pixels
 // \param pixels       Pointer to the pixels in memory, format must be RGBA 32 bits
 // void sfRenderWindow_setIcon(sfRenderWindow* renderWindow, unsigned int width, unsigned int height, const sfUint8* pixels);
-func (self RenderWindow) Seticon(width int , height int , pixels *Uint8 ) void { 
+func (self RenderWindow) Seticon(width int , height int , pixels *Uint8 ) void {
     return C.sfRenderWindow_setIcon(self.Cref, sf(int), sf(int), sf(*Uint8));
 }
 */
@@ -314,7 +313,7 @@ func (self RenderWindow) SetJoystickThreshold(threshold float32) {
 // \param renderWindow Render window object
 // \return Window handle
 // sfWindowHandle sfRenderWindow_getSystemHandle(const sfRenderWindow* renderWindow);
-func (self RenderWindow) Getsystemhandle() WindowHandle { 
+func (self RenderWindow) Getsystemhandle() WindowHandle {
     return C.sfRenderWindow_getSystemHandle(self.Cref);
 }
 */
@@ -327,21 +326,20 @@ func (self RenderWindow) Clear(color Color) {
 	C.sfRenderWindow_clear(self.Cref, color.Cref)
 }
 
-/*            
 // Change the current active view of a render window
 // \param renderWindow Render window object
 // \param view         Pointer to the new view
 // void sfRenderWindow_setView(sfRenderWindow* renderWindow, const sfView* view);
-func (self RenderWindow) Setview(view *View ) void { 
-    return C.sfRenderWindow_setView(self.Cref, sf(*View));
+func (self RenderWindow) SetView(view View) {
+	C.sfRenderWindow_setView(self.Cref, view.Cref)
 }
 
 // Get the current active view of a render window
 // \param renderWindow Render window object
 // \return Current active view
 // const sfView* sfRenderWindow_getView(const sfRenderWindow* renderWindow);
-func (self *View) *View(RenderWindow_getView)  { 
-    return C.sf*View(self.Cref, sf(*View));
+func (self RenderWindow) View() View {
+	return View{C.sfRenderWindow_getView(self.Cref)}
 }
 
 // Get the default view of a render window
@@ -349,16 +347,17 @@ func (self *View) *View(RenderWindow_getView)  {
 // \return Default view of the render window
 // const sfView* sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow);
 
-func (self *View) *View(RenderWindow_getDefaultView)  { 
-    return C.sf*View(self.Cref, sf(*View));
+func (self RenderWindow) DefaultView() View {
+	return View{C.sfRenderWindow_getDefaultView(self.Cref)}
 }
 
+/*
 // Get the viewport of a view applied to this target
 // \param renderWindow Render window object
 // \param view         Target view
 // \return Viewport rectangle, expressed in pixels in the current target
 // sfIntRect sfRenderWindow_getViewport(const sfRenderWindow* renderWindow, const sfView* view);
-func (self RenderWindow) Getviewport(view *View ) IntRect { 
+func (self RenderWindow) Getviewport(view *View ) IntRect {
     return C.sfRenderWindow_getViewport(self.Cref, sf(*View));
 }
 
@@ -368,7 +367,7 @@ func (self RenderWindow) Getviewport(view *View ) IntRect {
 // \param targetView   Target view to convert the point to (pass NULL to use the current view)
 // \return The converted point, in "world" units
 // sfVector2f sfRenderWindow_convertCoords(const sfRenderWindow* renderWindow, sfVector2i point, const sfView* targetView);
-func (self RenderWindow) Convertcoords(point Vector2i, targetView *View ) Vector2f { 
+func (self RenderWindow) Convertcoords(point Vector2i, targetView *View ) Vector2f {
     return C.sfRenderWindow_convertCoords(self.Cref, sfVector2i(point), sf(*View));
 }
 
@@ -378,7 +377,7 @@ func (self RenderWindow) Convertcoords(point Vector2i, targetView *View ) Vector
 // \param object       Object to draw
 // \param states       Render states to use for drawing (NULL to use the default states)
 // void sfRenderWindow_drawSprite(sfRenderWindow* renderWindow, const sfSprite* object, const sfRenderStates* states);
-// func (self RenderWindow) DrawSprite(object *Sprite , states *RenderStates ) { 
+// func (self RenderWindow) DrawSprite(object *Sprite , states *RenderStates ) {
 //     return C.sfRenderWindow_drawSprite(self.Cref, sf(*Sprite), sf(*RenderStates));
 // }
 func (self RenderWindow) DrawSpriteDefault(obj Sprite) {
@@ -386,17 +385,17 @@ func (self RenderWindow) DrawSpriteDefault(obj Sprite) {
 }
 
 // void sfRenderWindow_drawText(sfRenderWindow* renderWindow, const sfText* object, const sfRenderStates* states);
-// func (self RenderWindow) Drawtext(object *Text , states *RenderStates ) void { 
+// func (self RenderWindow) Drawtext(object *Text , states *RenderStates ) void {
 //     return C.sfRenderWindow_drawText(self.Cref, sf(*Text), sf(*RenderStates));
 // }
 func (self RenderWindow) DrawTextDefault(obj Text) {
 	C.sfRenderWindow_drawText(self.Cref, obj.Cref, nil)
 }
 
-/*            
+/*
 // void sfRenderWindow_drawShape(sfRenderWindow* renderWindow, const sfShape* object, const sfRenderStates* states);
 
-func (self RenderWindow) Drawshape(object *Shape , states *RenderStates ) void { 
+func (self RenderWindow) Drawshape(object *Shape , states *RenderStates ) void {
     return C.sfRenderWindow_drawShape(self.Cref, sf(*Shape), sf(*RenderStates));
 }
 */
@@ -409,7 +408,7 @@ func (self RenderWindow) DrawCircleShapeDefault(obj CircleShape) {
 /*
 // void sfRenderWindow_drawConvexShape(sfRenderWindow* renderWindow, const sfConvexShape* object, const sfRenderStates* states);
 
-func (self RenderWindow) Drawconvexshape(object *ConvexShape , states *RenderStates ) void { 
+func (self RenderWindow) Drawconvexshape(object *ConvexShape , states *RenderStates ) void {
     return C.sfRenderWindow_drawConvexShape(self.Cref, sf(*ConvexShape), sf(*RenderStates));
 }
 */
@@ -422,7 +421,7 @@ func (self RenderWindow) DrawRectangleShapeDefault(obj RectangleShape) {
 /*
 // void sfRenderWindow_drawVertexArray(sfRenderWindow* renderWindow, const sfVertexArray* object, const sfRenderStates* states);
 
-func (self RenderWindow) Drawvertexarray(object *VertexArray , states *RenderStates ) void { 
+func (self RenderWindow) Drawvertexarray(object *VertexArray , states *RenderStates ) void {
     return C.sfRenderWindow_drawVertexArray(self.Cref, sf(*VertexArray), sf(*RenderStates));
 }
 
@@ -434,7 +433,7 @@ func (self RenderWindow) Drawvertexarray(object *VertexArray , states *RenderSta
 // \param states       Render states to use for drawing (NULL to use the default states)
 // void sfRenderWindow_drawPrimitives(sfRenderWindow* renderWindow, const sfVertex* vertices, unsigned int vertexCount, sfPrimitiveType type, const sfRenderStates* states);
 
-func (self RenderWindow) Drawprimitives(vertices *Vertex , vertexCount int , type PrimitiveType, states *RenderStates ) void { 
+func (self RenderWindow) Drawprimitives(vertices *Vertex , vertexCount int , type PrimitiveType, states *RenderStates ) void {
     return C.sfRenderWindow_drawPrimitives(self.Cref, sf(*Vertex), sf(int), sfPrimitivetype(type), sf(*RenderStates));
 }
 */
@@ -497,5 +496,5 @@ func (self RenderWindow) Capture() Image {
 
 func (self RenderWindow) ToWindow() Window {
 	ref := unsafe.Pointer(self.Cref)
-	return Window{(CWindow) (ref)}
+	return Window{(CWindow)(ref)}
 }
