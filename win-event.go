@@ -63,7 +63,7 @@ package sfml
 */
 import "C"
 
-type CEvent *C.sfEvent
+// type CEvent *C.sfEvent
 type Event struct {
 	Cref *C.sfEvent
 }
