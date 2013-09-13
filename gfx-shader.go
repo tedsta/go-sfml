@@ -357,10 +357,10 @@ func (self Shader) Bind() {
 // instead of a SFML drawable.
 // \param shader Shader to unbind
 // void sfShader_unbind(const sfShader* shader);
-func (self Shader) Unbind() {
+/*func (self Shader) Unbind() {
 	//glCheck(glUseProgramObjectARB(0))
 	// C.sfShader_unbind(self.Cref);
-}
+}*/
 
 // \brief Tell whether or not the system supports shaders
 // This function should always be called before using
